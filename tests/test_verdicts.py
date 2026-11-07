@@ -110,7 +110,7 @@ def _sweep(**over):
 def test_sweep_verdicts_have_every_number_and_no_trend_word():
     kind, text = ev.verdict_sweep(_sweep())
     assert kind == "info" and "Gleichstand in A in 13 von 20, B entscheidet in 13; Optimalmenge Median 2 (Maximum 9)" in text.replace("2,5", "2") or "Optimalmenge Median 2" in text
-    assert "M* Min 0,75, Median 3,75, 90. Perzentil 7,0, Max 7,0" in text and "Schranke B-Spanne + 1 (Median 48) hält in 20 von 20" in text.replace("48,5", "48") or "hält in 20 von 20" in text
+    assert "M* Min 0,75, Median 3,75, 90. Perzentil 7,0, Max 7,0" in text and "ist beweisbar hinreichend; M* liegt darunter in 20 von 20" in text
     assert "Treffer je M" in text and "Treffer je τ" in text
     for word in ("fällt", "steigt", "wächst", "sinkt", "Trend"):
         assert word not in text

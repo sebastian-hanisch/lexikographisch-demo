@@ -265,7 +265,7 @@ def verdict_lex(a: Analysis) -> tuple[str, str]:
     a_best = value_text(a.exact_sums[0][a.opt_set[0]], s)
     if k == 1:
         return "info", (f"A hat **genau einen** besten Plan (A = {a_best}): B hat nichts zu entscheiden, **lexikographisch ist hier dasselbe wie „nur A“**. "
-                        f"Das ist bei reellen Werten der Normalfall, bei ganzen Zahlen die Ausnahme.")
+                        f"Das ist bei reellen Werten der Normalfall; bei ganzen Zahlen hängt es von n ab (bei n = 8 in 7 von 20 festen Instanzen, bei n = 3 in 17 von 20).")
     b_vals = a.exact_sums[1][a.opt_set]
     if a.b_decides:
         return "success", (f"A hat **{k}** beste Pläne (A = {a_best}); unter ihnen reicht B von {value_text(b_vals.min(), s)} bis {value_text(b_vals.max(), s)}, "
@@ -330,7 +330,7 @@ def verdict_w(a: Analysis, rows: list[dict], solver: int) -> tuple[str, str]:
     if first_bad:
         bad = sorted({r["status"] for r in rows if r["k"] > hi})
         what = "wird **B ignoriert**" if bad == ["B"] else f"geht etwas verloren ({', '.join(bad)})"
-        tail = f" Ab w = {pow10(-first_bad[0])} {what}: sein Beitrag w·B liegt unter der Rechen- oder Toleranzgrenze des Lösers."
+        tail = f" Ab w = {pow10(-first_bad[0])} {what} (Ursache hier nicht isoliert)."
     lead = [r["k"] for r in rows if r["k"] < lo]
     head = f" Bei w ≥ {pow10(-lo)} ist w zu groß: A wird verletzt." if lead else ""
     return ("warning" if first_bad or lead else "info"), f"{name}: A + w·B trifft das lexikographische Optimum bei w von {pow10(-lo)} bis {pow10(-hi)}.{head}{tail}"
@@ -380,7 +380,7 @@ def verdict_sweep(r: dict) -> tuple[str, str]:
              "Treffer je M (10⁰, 10¹, 10², …): " + ", ".join(str(h) for h in r["hits_m"]),
              "Treffer je τ (0, 10⁻¹², 10⁻⁹, 10⁻⁶, 10⁻³, 10⁻², 5·10⁻², 0,1): " + ", ".join(str(h) for h in r["hits_tau"])]
     if r["bound_ok"] is not None:
-        parts.insert(2, f"Schranke B-Spanne + 1 (Median {de(r['bound_median'], 0)}) hält in {r['bound_ok']} von {r['seeds']}")
+        parts.insert(2, f"Schranke B-Spanne + 1 (Median {de(r['bound_median'], 0)}) ist beweisbar hinreichend; M* liegt darunter in {r['bound_ok']} von {r['seeds']}")
     return "info", f"Familie {fam}, n = {r['n']}, je {r['seeds']} feste Instanzen: " + "; ".join(parts) + "."
 
 

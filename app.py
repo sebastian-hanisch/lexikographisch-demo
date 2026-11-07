@@ -87,7 +87,7 @@ st.markdown(
 **Ist „zuerst A, dann B“ dasselbe wie ein großes Gewicht?** Dieselbe Aufgabe wie in Stück 1 bis 3: **n Personen** übernehmen **n Aufgaben**, jede Paarung hat bis zu drei Belastungen:
 **A** (Kosten), **B** (Zeit), **C** (Wünsche). **Lexikographisch** heißt: unter allen Plänen mit kleinstem A wähle den mit kleinstem B, unter diesen den mit kleinstem C. Man schreibt das gern als
 **ein** Ziel **M·A + B** mit großem M. Die Demo prüft, wann das stimmt: Das Gewicht hat ein **Fenster**, in dem es das lexikographische Optimum findet; darunter kippt die Rangfolge, darüber verschwindet
-B im Gleitkomma oder in der Toleranz des Lösers. Und eine **Toleranz** auf A macht aus dem Vorrang einen Kompromiss.
+B im Gleitkomma oder bei einem Löser. Und eine **Toleranz** auf A macht aus dem Vorrang einen Kompromiss.
 
 Weiter unten: **🔬 Das Gewicht M**, **🔬 Ein kleines Gewicht auf B und der Löser**, **🔬 Sequentiell mit Toleranz**, **🔬 Drei Prioritäten**, **🔬 Wie oft und wie viel?**, **🚧 Wo die Annahmen enden** und der Expander **📐 Mathematische Formulierung**.
 """
@@ -269,7 +269,7 @@ with st.expander("📐 Mathematische Formulierung"):
 $$M^\* = \max\left(0,\ \max_{\pi:\,A(\pi) > A^\*} \frac{B^\* - B(\pi)}{A(\pi) - A^\*}\right).$$
 **Ganze Zahlen.** Sind alle Summen ganzzahlig, ist $A(\pi) - A^\* \ge 1$ für jeden Plan mit $A(\pi) > A^\*$, und $M = (\max B - \min B) + 1$ genügt: $M^\* \le \max B - \min B$. Reelle Werte haben keine solche Schranke für alle Instanzen.
 
-**Gleitkomma.** float64 hat 53 Bit Mantisse: $\mathrm{fl}(2^{53} + 1) = 2^{53} \approx 9{,}007 \cdot 10^{15}$. Ist $M \cdot a_{ij} \ge 2^{53}$, unterscheidet die Kostenmatrix $M a_{ij} + b_{ij}$ das $b_{ij}$ nicht mehr. Bei drei Prioritäten kommt $M^2 a_{ij}$ ins Spiel: schon $M = 10^8$ erreicht $M^2 a = 10^{16} a$.
+**Gleitkomma.** float64 hat 53 Bit Mantisse: $\mathrm{fl}(2^{53} + 1) = 2^{53} \approx 9{,}007 \cdot 10^{15}$. Ist $M \cdot a_{ij} \ge 2^{53}$, unterscheidet die Kostenmatrix $M a_{ij} + b_{ij}$ das $b_{ij}$ nicht mehr vollständig (ab $2^{53}$ gehen zuerst die ungeraden Werte verloren). Bei drei Prioritäten kommt $M^2 a_{ij}$ ins Spiel: schon $M = 10^8$ erreicht $M^2 a = 10^{16} a$.
 
 **Toleranz.** $\min_\pi B(\pi)$ unter $A(\pi) \le A^\* (1 + \tau)$; mit $\tau = 0$ ist das lexikographisch (bei exakten Zahlen), mit $\tau > 0$ ein ε-Constraint auf $A$ (Stück 3).
 

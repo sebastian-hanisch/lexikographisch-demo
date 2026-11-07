@@ -39,7 +39,7 @@ PRESET_HELP = {
     "Gleichstand, B entscheidet (n = 8)": "Kosten haben sechs beste Pläne; erst die Zeit wählt unter ihnen. Mit zu großem M verschwindet die Zeit im Gleitkomma.",
     "Kleinstes Beispiel (n = 3, ganze Zahlen)": "Drei Personen, sechs Pläne: zwei beste Pläne in A, das kleinste M ist 4.",
     "Kein Gleichstand (n = 8, reell)": "Bei reellen Werten hat A genau einen besten Plan: B hat nichts zu entscheiden, lexikographisch ist gleich nur A.",
-    "Gleichstand geht in float64 verloren (Dezimal)": "Dezimalzahlen sind in float64 nicht exakt: zwei in A gleiche Pläne gelten nicht mehr als gleich, und B entscheidet falsch.",
+    "Gleichstand geht in float64 verloren (Dezimal)": "Dezimalzahlen sind in float64 nicht exakt: zwei in A gleiche Pläne gelten nicht mehr als gleich, und B kann falsch entscheiden (hier ja; in den festen Instanzen 1 von 20).",
     "Toleranz macht den Vorrang zum Kompromiss": "Mit einer Toleranz von 1 % auf A gewinnt B rund ein Fünftel bei weniger als 1 % Verlust in A.",
     "Drei Prioritäten (n = 8)": "Auch C entscheidet noch; mit M²·A + M·B + C geht C ab M = 10⁸ verloren.",
     "Größtes M* (Dezimal 1,0 bis 9,9)": "Der Fall mit dem größten kleinsten Gewicht der festen Instanzen: M muss 78 überschreiten.",

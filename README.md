@@ -7,7 +7,7 @@ Stück 4 der Linie **Zielfunktionsdesign** („Das Ziel ist das Modell“) in de
 
 ## Warum dieses Problem
 
-Ein Vorrang und ein großes Gewicht sehen gleich aus und sind es nur in einem **Fenster**. Die Fragen: Wann entscheidet B überhaupt etwas? Wie groß muss `M` mindestens sein? Wo verschwindet B im Gleitkomma oder in der Toleranz eines Lösers? Und was macht eine **Toleranz** („fast lexikographisch“) aus dem Vorrang?
+Ein Vorrang und ein großes Gewicht sehen gleich aus und sind es nur in einem **Fenster**. Die Fragen: Wann entscheidet B überhaupt etwas? Wie groß muss `M` mindestens sein? Wo verschwindet B im Gleitkomma oder bei einem Löser? Und was macht eine **Toleranz** („fast lexikographisch“) aus dem Vorrang?
 
 ## Modell
 
@@ -24,12 +24,12 @@ Alle Zahlen stammen aus den Auswertungsfunktionen der App und sind in `tests/tes
 | Frage | Befund |
 |---|---|
 | Entscheidet B überhaupt? Instanzen mit mindestens zwei besten Plänen in A | **13 / 1 / 0** von 20; Optimalmenge Median **2,5 / 1,0 / 1,0** (Maximum **9 / 2 / 1**); B unterscheidet unter ihnen in **13 / 1 / 0** von 20: **bei reellen Werten ist „lexikographisch“ dasselbe wie „nur A“** |
-| Kleinstes Gewicht `M*` (Min / Median / 90. Perzentil / Max) | ganze Zahlen **0,75 / 3,75 / 7,0 / 7,0**; Dezimal **0,97 / 8,11 / 23,5 / 78,0**; reell **0,68 / 5,90 / 29,9 / 96,7**; `M*` über 10 in **0 / 8 / 7** von 20, über 1000 in **0 / 0 / 0**; die Schranke „B-Spanne + 1“ (ganze Zahlen, Median **48,5**) hält in **20** von 20 |
+| Kleinstes Gewicht `M*` (Min / Median / 90. Perzentil / Max) | ganze Zahlen **0,75 / 3,75 / 7,0 / 7,0**; Dezimal **0,97 / 8,11 / 23,5 / 78,0**; reell **0,68 / 5,90 / 29,9 / 96,7**; `M*` über 10 in **0 / 8 / 7** von 20, über 1000 in **0 / 0 / 0**; die Schranke „B-Spanne + 1“ (ganze Zahlen, Median **48,5**) ist beweisbar hinreichend; in der Messung liegt `M*` darunter, in **20** von 20 (Maximum 7,0) |
 | Zu kleines Gewicht: Treffer des lexikographischen Optimums bei `M` = 1 / 10 / 100 (von 20) | ganze Zahlen **1 / 20 / 20**, Dezimal **1 / 12 / 20**, reell **2 / 13 / 20**: die einfache Summe (`M` = 1) ist fast nie lexikographisch |
-| Zu großes Gewicht in float64, ganze Zahlen: Treffer bei `M` = 10¹⁴ / 10¹⁵ / 10¹⁶ / 10¹⁷ / 10¹⁸ (von 20) | **20 / 20 / 13 / 11 / 11**; bei Dezimal und reell **20** bei jeder Stufe bis 10¹⁸ (B hat dort nichts zu entscheiden) |
+| Zu großes Gewicht in float64, ganze Zahlen: Treffer bei `M` = 10¹⁴ / 10¹⁵ / 10¹⁶ / 10¹⁷ / 10¹⁸ (von 20), gerechnet als float64-Summe über alle Pläne mit numpy | **20 / 20 / 13 / 11 / 11** (mit der Ungarischen Methode auf denselben Matrizen bei 10¹⁵ / 10¹⁶ / 10¹⁷ / 10¹⁸: 20 / 15 / 12 / 10; das Fenster endet in beiden Fällen bei 10¹⁵ bis 10¹⁶); bei Dezimal und reell **20** bei jeder Stufe bis 10¹⁸ (reell: B hat nichts zu entscheiden; Dezimal 1,0 bis 9,9: B entscheidet nur in 1 Instanz, und dort steht der richtige Plan zufällig vorn in der Aufzählung) |
 | Ungarische Methode, n = 50, ganze Zahlen, gegen `M` = 401 (von 20) | `M` = 1: **0**; `M` = 10³: **20**; `M` = 10¹⁶: **0**; `M` = 10¹⁸: **0** |
 | Kleines Gewicht `A + w·B` mit der Ungarischen Methode, ganze Zahlen (von 20) | bis w = 10⁻¹⁵ **20**, w = 10⁻¹⁶: **16**, w = 10⁻¹⁷ und 10⁻¹⁸: **10** |
-| Kleines Gewicht `A + w·B` mit HiGHS (Voreinstellungen), ganze Zahlen (von 20) | w = 10⁻¹ bis 10⁻⁶: **20**, w = 10⁻⁷: **19**, **ab w = 10⁻⁸ bis 10⁻¹⁸: 8**: B wird ignoriert |
+| Kleines Gewicht `A + w·B` mit HiGHS (Voreinstellungen), ganze Zahlen (von 20) | w = 10⁻¹ bis 10⁻⁶: **20**, w = 10⁻⁷: **19**, **ab w = 10⁻⁸ bis 10⁻¹⁸: 8**: B wird ignoriert (Ursache nicht isoliert; die MIP-Lückenoptionen allein erklären es nicht) |
 | `M·A + B` mit HiGHS, ganze Zahlen (von 20) | `M` = 1: **1**; 10¹ bis 10¹⁵: **20**; 10¹⁶: **17**; 10¹⁷: **10**; 10¹⁸: **12** |
 | Drei Prioritäten `M²·A + M·B + C`, ganze Zahlen (von 20) | `M` = 10¹ bis 10⁷: **20**; 10⁸: **19**; 10⁹: **19**; 10¹⁰: **20**; 10¹¹: **18**; 10¹²: **19**; C entscheidet unter den A- und B-Optimalen in **2** von 20 Instanzen |
 | Sequentiell mit relativer Toleranz τ = 0 / 10⁻¹² / 10⁻⁹ / 10⁻⁶ / 10⁻³ / 10⁻² / 5·10⁻² / 0,1: gleich dem exakten Lex-Optimum (von 20) | ganze Zahlen **20 / 20 / 20 / 20 / 20 / 20 / 19 / 9**; Dezimal **20 / 20 / 20 / 20 / 20 / 17 / 9 / 5**; reell **20 / 20 / 20 / 20 / 20 / 18 / 11 / 5** |
